@@ -64,10 +64,12 @@
         <img
           :src="flagUrl"
           :alt="`Flag of ${currentCountry.name}`"
-          class="flag-img"
+          class="flag-img flag-img--dimmed"
         />
+        <div class="answer-overlay">
+          <div class="answer-badge">🏳️ {{ countryName }}</div>
+        </div>
       </div>
-      <div class="answer-badge">🏳️ {{ countryName }}</div>
       <div class="action-row">
         <button class="btn btn-primary" @click="startRound">{{ t.nextFlag }}</button>
         <button class="btn btn-secondary" @click="step = 'start'">{{ t.backToStart }}</button>
@@ -140,7 +142,7 @@ export default {
     },
     flagUrl() {
       if (!this.currentCountry) return ''
-      return `https://flagcdn.com/w1280/${this.currentCountry.code}.png`
+      return `https://flagcdn.com/w2560/${this.currentCountry.code}.png`
     },
     countryName() {
       if (!this.currentCountry) return ''
@@ -236,22 +238,27 @@ h2 {
 }
 
 .flag-container {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  width: 92vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: #ffffff12;
   border-radius: 12px;
   padding: 16px;
   box-shadow: 0 8px 32px #0005;
-  flex-shrink: 1;
-  min-height: 0;
-  display: flex;
 }
 
 .flag-img {
-  width: 960px;
-  max-width: 92vw;
-  max-height: calc(100vh - 220px);
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
   border-radius: 6px;
-  display: block;
 }
 
 .top-controls {
@@ -335,17 +342,50 @@ h2 {
   color: #fff;
 }
 
+.flag-img--dimmed {
+  filter: brightness(0.35);
+}
+
+.answer-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .answer-badge {
-  font-size: 2.4rem;
+  font-size: 7rem;
   font-weight: bold;
-  background: #16213e;
-  border: 2px solid #0f3460;
+  background: #16213ecc;
+  border: 2px solid #e94560;
   border-radius: 10px;
   padding: 18px 40px;
-  color: #e2e8f0;
+  color: #fff;
   letter-spacing: 0.5px;
-  width: 960px;
-  max-width: 92vw;
+  width: 90%;
+  backdrop-filter: blur(6px);
+  box-shadow:
+    0 0 12px #e9456066,
+    0 0 32px #e9456033,
+    0 0 64px #e9456018;
+  animation: badgeGlow 0.5s ease-out;
+}
+
+@keyframes badgeGlow {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+    box-shadow: 0 0 0 #e94560;
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow:
+      0 0 12px #e9456066,
+      0 0 32px #e9456033,
+      0 0 64px #e9456018;
+  }
 }
 
 .action-row {
