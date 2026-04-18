@@ -1,5 +1,24 @@
 <template>
   <div id="app" @click.self="langOpen = false">
+    <!-- Top-left: region selector -->
+    <div class="top-controls top-controls--left">
+      <div class="lang-dropdown">
+        <button class="btn-topbar" @click="regionOpen = !regionOpen">
+          {{ t.regions[selectedRegion] }}
+        </button>
+        <div v-if="regionOpen" class="lang-menu lang-menu--left">
+          <button
+            v-for="r in regions"
+            :key="r.code"
+            class="lang-option"
+            :class="{ active: selectedRegion === r.code }"
+            @click="setRegion(r.code)"
+          >
+            {{ t.regions[r.code] }}
+          </button>
+        </div>
+      </div>
+    </div>
     <!-- Top-right controls -->
     <div class="top-controls">
       <!-- Language dropdown -->
@@ -98,6 +117,14 @@ const i18n = {
     backToStart: 'Powrót do początku',
     fullscreen: 'Pełny ekran',
     exitFullscreen: 'Wyjdź',
+    regions: {
+      world: 'Świat',
+      europe: 'Europa',
+      asia: 'Azja',
+      africa: 'Afryka',
+      americas: 'Ameryki',
+      oceania: 'Oceania',
+    },
   },
   en: {
     appTitle: 'Flag Guesser',
@@ -115,6 +142,14 @@ const i18n = {
     backToStart: 'Back to Start',
     fullscreen: 'Fullscreen',
     exitFullscreen: 'Exit',
+    regions: {
+      world: 'World',
+      europe: 'Europe',
+      asia: 'Asia',
+      africa: 'Africa',
+      americas: 'Americas',
+      oceania: 'Oceania',
+    },
   },
 }
 
@@ -127,6 +162,16 @@ export default {
       isFullscreen: false,
       locale: 'pl',
       langOpen: false,
+      regionOpen: false,
+      selectedRegion: 'world',
+      regions: [
+        { code: 'world',    icon: '🌍' },
+        { code: 'europe',   icon: '🇪🇺' },
+        { code: 'asia',     icon: '🌏' },
+        { code: 'africa',   icon: '🌍' },
+        { code: 'americas', icon: '🌎' },
+        { code: 'oceania',  icon: '🌊' },
+      ],
       languages: [
         { code: 'pl', flagImg: 'https://flagcdn.com/w40/pl.png', label: 'Polski' },
         { code: 'en', flagImg: 'https://flagcdn.com/w40/gb.png', label: 'English' },
@@ -140,6 +185,13 @@ export default {
     currentLang() {
       return this.languages.find(l => l.code === this.locale)
     },
+    currentRegion() {
+      return this.regions.find(r => r.code === this.selectedRegion)
+    },
+    filteredCountries() {
+      if (this.selectedRegion === 'world') return countries
+      return countries.filter(c => c.region === this.selectedRegion)
+    },
     flagUrl() {
       if (!this.currentCountry) return ''
       return `https://flagcdn.com/w2560/${this.currentCountry.code}.png`
@@ -151,8 +203,9 @@ export default {
   },
   methods: {
     startRound() {
-      const index = Math.floor(Math.random() * countries.length)
-      this.currentCountry = countries[index]
+      const pool = this.filteredCountries
+      const index = Math.floor(Math.random() * pool.length)
+      this.currentCountry = pool[index]
       this.step = 'flag'
     },
     toggleFullscreen() {
@@ -166,13 +219,20 @@ export default {
       this.locale = code
       this.langOpen = false
     },
+    setRegion(code) {
+      this.selectedRegion = code
+      this.regionOpen = false
+    },
   },
   mounted() {
     document.addEventListener('fullscreenchange', () => {
       this.isFullscreen = !!document.fullscreenElement
     })
     document.addEventListener('click', (e) => {
-      if (!this.$el.querySelector('.lang-dropdown')?.contains(e.target)) {
+      if (!this.$el.querySelector('.top-controls--left')?.contains(e.target)) {
+        this.regionOpen = false
+      }
+      if (!this.$el.querySelector('.lang-dropdown:not(.top-controls--left .lang-dropdown)')?.contains(e.target)) {
         this.langOpen = false
       }
     })
@@ -271,6 +331,11 @@ h2 {
   gap: 8px;
 }
 
+.top-controls--left {
+  right: auto;
+  left: 16px;
+}
+
 .btn-topbar {
   display: flex;
   align-items: center;
@@ -307,6 +372,11 @@ h2 {
   overflow: hidden;
   min-width: 140px;
   box-shadow: 0 8px 24px #0006;
+}
+
+.lang-menu--left {
+  right: auto;
+  left: 0;
 }
 
 .lang-flag-img {
