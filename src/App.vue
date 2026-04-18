@@ -102,7 +102,7 @@ import { countries } from './data/countries.js'
 
 const i18n = {
   pl: {
-    appTitle: 'Zgadnij Flagę',
+    appTitle: 'FlagQuest',
     appSubtitle: 'Jak dobrze znasz flagi świata?',
     startGame: 'Rozpocznij grę',
     readyTitle: 'Jesteś gotowy?',
@@ -127,7 +127,7 @@ const i18n = {
     },
   },
   en: {
-    appTitle: 'Flag Guesser',
+    appTitle: 'FlagQuest',
     appSubtitle: 'How well do you know the flags of the world?',
     startGame: 'Start Game',
     readyTitle: 'Are you ready?',
