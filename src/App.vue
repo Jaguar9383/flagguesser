@@ -276,7 +276,7 @@ body {
   justify-content: center;
   gap: 14px;
   padding: 20px;
-  padding-top: max(20px, env(safe-area-inset-top));
+  padding-top: max(72px, calc(env(safe-area-inset-top) + 58px));
   padding-bottom: max(20px, env(safe-area-inset-bottom));
   height: 100vh;
   height: 100dvh;
