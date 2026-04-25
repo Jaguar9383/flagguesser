@@ -245,11 +245,13 @@ export default {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   background: #1a1a2e;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -264,6 +266,7 @@ body {
   color: #eaeaea;
   width: 100%;
   height: 100vh;
+  height: 100dvh;
 }
 
 .screen {
@@ -273,7 +276,10 @@ body {
   justify-content: center;
   gap: 14px;
   padding: 20px;
+  padding-top: max(20px, env(safe-area-inset-top));
+  padding-bottom: max(20px, env(safe-area-inset-bottom));
   height: 100vh;
+  height: 100dvh;
   animation: fadeIn 0.3s ease;
 }
 
@@ -283,16 +289,16 @@ body {
 }
 
 h1 {
-  font-size: 2.8rem;
+  font-size: clamp(1.8rem, 7vw, 2.8rem);
   letter-spacing: 1px;
 }
 
 h2 {
-  font-size: 1.8rem;
+  font-size: clamp(1.2rem, 5vw, 1.8rem);
 }
 
 .subtitle {
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 3.5vw, 1.1rem);
   color: #aab4c8;
   max-width: 400px;
 }
@@ -323,8 +329,8 @@ h2 {
 
 .top-controls {
   position: fixed;
-  top: 14px;
-  right: 16px;
+  top: max(14px, env(safe-area-inset-top));
+  right: max(16px, env(safe-area-inset-right));
   z-index: 100;
   display: flex;
   align-items: center;
@@ -333,7 +339,7 @@ h2 {
 
 .top-controls--left {
   right: auto;
-  left: 16px;
+  left: max(16px, env(safe-area-inset-left));
 }
 
 .btn-topbar {
@@ -351,6 +357,8 @@ h2 {
   transition: background 0.2s, transform 0.1s;
   backdrop-filter: blur(4px);
   white-space: nowrap;
+  touch-action: manipulation;
+  min-height: 44px;
 }
 
 .btn-topbar:hover {
@@ -425,12 +433,12 @@ h2 {
 }
 
 .answer-badge {
-  font-size: 7rem;
+  font-size: clamp(1.4rem, 8vw, 7rem);
   font-weight: bold;
   background: #16213ecc;
   border: 2px solid #e94560;
   border-radius: 10px;
-  padding: 18px 40px;
+  padding: clamp(10px, 3vw, 18px) clamp(16px, 5vw, 40px);
   color: #fff;
   letter-spacing: 0.5px;
   width: 90%;
@@ -440,6 +448,7 @@ h2 {
     0 0 32px #e9456033,
     0 0 64px #e9456018;
   animation: badgeGlow 0.5s ease-out;
+  word-break: break-word;
 }
 
 @keyframes badgeGlow {
@@ -473,6 +482,8 @@ h2 {
   border-radius: 8px;
   cursor: pointer;
   transition: transform 0.1s, opacity 0.2s;
+  touch-action: manipulation;
+  min-height: 44px;
 }
 
 .btn:hover {
@@ -492,5 +503,24 @@ h2 {
 .btn-secondary {
   background: #0f3460;
   color: #e2e8f0;
+}
+
+@media (max-width: 480px) {
+  .top-controls {
+    gap: 6px;
+  }
+
+  .btn-topbar {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  .screen {
+    gap: 10px;
+  }
+
+  .flag-container {
+    padding: 10px;
+  }
 }
 </style>
