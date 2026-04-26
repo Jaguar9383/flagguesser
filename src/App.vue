@@ -86,7 +86,10 @@
           class="flag-img flag-img--dimmed"
         />
         <div class="answer-overlay">
-          <div class="answer-badge">🏳️ {{ countryName }}</div>
+          <div class="answer-badge">
+            <div class="answer-country">🏳️ {{ countryName }}</div>
+            <div class="answer-capital">🏛️ {{ t.capitalLabel }} {{ capitalName }}</div>
+          </div>
         </div>
       </div>
       <div class="action-row">
@@ -115,6 +118,7 @@ const i18n = {
     answerTitle: 'Odpowiedź to…',
     nextFlag: 'Następna flaga ➡️',
     backToStart: 'Powrót do początku',
+    capitalLabel: 'Stolica:',
     fullscreen: 'Pełny ekran',
     exitFullscreen: 'Wyjdź',
     regions: {
@@ -140,6 +144,7 @@ const i18n = {
     answerTitle: 'The answer is…',
     nextFlag: 'Next Flag ➡️',
     backToStart: 'Back to Start',
+    capitalLabel: 'Capital:',
     fullscreen: 'Fullscreen',
     exitFullscreen: 'Exit',
     regions: {
@@ -199,6 +204,10 @@ export default {
     countryName() {
       if (!this.currentCountry) return ''
       return this.locale === 'pl' ? this.currentCountry.namePl : this.currentCountry.name
+    },
+    capitalName() {
+      if (!this.currentCountry) return ''
+      return this.locale === 'pl' ? this.currentCountry.capitalPl : this.currentCountry.capital
     },
   },
   methods: {
@@ -433,8 +442,6 @@ h2 {
 }
 
 .answer-badge {
-  font-size: clamp(1.4rem, 8vw, 7rem);
-  font-weight: bold;
   background: #16213ecc;
   border: 2px solid #e94560;
   border-radius: 10px;
@@ -449,6 +456,18 @@ h2 {
     0 0 64px #e9456018;
   animation: badgeGlow 0.5s ease-out;
   word-break: break-word;
+}
+
+.answer-country {
+  font-size: clamp(1.4rem, 8vw, 7rem);
+  font-weight: bold;
+}
+
+.answer-capital {
+  font-size: clamp(0.9rem, 4vw, 3rem);
+  font-weight: 500;
+  color: #aab4c8;
+  margin-top: 6px;
 }
 
 @keyframes badgeGlow {
